@@ -33,6 +33,7 @@ async function bootstrap() {
   // Global exception filter
   app.useGlobalFilters(new HttpExceptionFilter());
 
+
   // Swagger
   const config = new DocumentBuilder()
     .setTitle('HubAssist API')

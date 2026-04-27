@@ -51,7 +51,7 @@
     "class-validator": "^0.15.1",
     "compression": "^1.8.1",
     "helmet": "^8.1.0",
-    "cloudinary": "^2.10.0",
+
     "joi": "^18.1.2",
     "nodemailer": "^8.0.7",
     "passport-jwt": "^4.0.1",
