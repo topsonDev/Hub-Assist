@@ -9,6 +9,7 @@ import {
   Body,
   Query,
   UseInterceptors,
+  Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -53,6 +54,13 @@ export class UsersController {
   async findAll(@Query('skip') skip: number = 0, @Query('take') take: number = 10) {
     const [users, total] = await this.usersService.findAll(skip, take);
     return { users, total };
+  }
+
+  @Post('change-password')
+  @ApiOperation({ summary: 'Change own password' })
+  @ApiResponse({ status: 200, description: 'Password changed successfully' })
+  changePassword(@Req() req: any, @Body() body: { currentPassword: string; newPassword: string }) {
+    return this.usersService.changePassword(req.user.sub, body.currentPassword, body.newPassword);
   }
 
   @Get(':id')
