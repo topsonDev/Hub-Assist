@@ -59,7 +59,9 @@ describe('Auth (e2e)', () => {
 
   describe('POST /api/auth/register', () => {
     it('201 – creates user and returns message', async () => {
-      mockAuthService.register.mockResolvedValue({ message: 'User registered. Check your email for OTP.' });
+      mockAuthService.register.mockResolvedValue({
+        message: 'User registered. Check your email for OTP.',
+      });
 
       return request(app.getHttpServer())
         .post('/api/auth/register')
@@ -132,11 +134,54 @@ describe('Auth (e2e)', () => {
     });
 
     it('401 – invalid refresh token returns unauthorized', async () => {
-      mockAuthService.refresh.mockRejectedValue(new UnauthorizedException('Invalid or revoked refresh token'));
+      mockAuthService.refresh.mockRejectedValue(
+        new UnauthorizedException('Invalid or revoked refresh token'),
+      );
 
       return request(app.getHttpServer())
         .post('/api/auth/refresh')
         .send({ refreshToken: 'invalid-token' })
+        .expect(401);
+    });
+  });
+
+  // ── POST /api/auth/forgot-password ────────────────────────────────────────
+
+  describe('POST /api/auth/forgot-password', () => {
+    it('201 – sends reset OTP for existing email', async () => {
+      mockAuthService.forgotPassword.mockResolvedValue({
+        message: 'Password reset OTP sent to your email',
+      });
+
+      return request(app.getHttpServer())
+        .post('/api/auth/forgot-password')
+        .send({ email: 'user@test.com' })
+        .expect(201)
+        .expect((res) => expect(res.body.message).toBeDefined());
+    });
+  });
+
+  // ── POST /api/auth/reset-password ─────────────────────────────────────────
+
+  describe('POST /api/auth/reset-password', () => {
+    it('201 – resets password with valid OTP', async () => {
+      mockAuthService.resetPassword.mockResolvedValue({ message: 'Password reset successfully' });
+
+      return request(app.getHttpServer())
+        .post('/api/auth/reset-password')
+        .send({ email: 'user@test.com', otp: '123456', newPassword: 'NewSecurePass123' })
+        .expect(201)
+        .expect((res) => expect(res.body.message).toBe('Password reset successfully'));
+    });
+
+    it('401 – invalid OTP returns unauthorized', async () => {
+      mockAuthService.resetPassword.mockRejectedValue(
+        new UnauthorizedException('Invalid or expired OTP'),
+      );
+
+      return request(app.getHttpServer())
+        .post('/api/auth/reset-password')
+        .send({ email: 'user@test.com', otp: '000000', newPassword: 'NewSecurePass123' })
         .expect(401);
     });
   });

@@ -49,6 +49,22 @@ export class DashboardService {
     }));
   }
 
+  async getGrowth(): Promise<Array<{ date: string; members: number }>> {
+    const results = await this.userRepo
+      .createQueryBuilder('user')
+      .select("TO_CHAR(DATE_TRUNC('month', user.createdAt), 'YYYY-MM')", 'date')
+      .addSelect('COUNT(user.id)', 'members')
+      .where("user.createdAt >= NOW() - INTERVAL '12 months'")
+      .groupBy("DATE_TRUNC('month', user.createdAt)")
+      .orderBy("DATE_TRUNC('month', user.createdAt)", 'ASC')
+      .getRawMany();
+
+    return results.map((r) => ({
+      date: r.date,
+      members: parseInt(r.members, 10),
+    }));
+  }
+
   async getAdminStats() {
     const stats = await this.getStats();
     const totalBookings = await this.bookingRepo.count();

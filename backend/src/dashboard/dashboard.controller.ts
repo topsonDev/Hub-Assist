@@ -24,6 +24,13 @@ export class DashboardController {
     return this.service.getActivity();
   }
 
+  @Get('growth')
+  @ApiOperation({ summary: 'Get member growth over the last 12 months' })
+  @ApiResponse({ status: 200, description: 'Member growth data retrieved successfully' })
+  getGrowth() {
+    return this.service.getGrowth();
+  }
+
   @Get('admin-stats')
   @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Get admin statistics (admin only)' })
