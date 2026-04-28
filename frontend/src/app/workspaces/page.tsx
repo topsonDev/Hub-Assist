@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { Workspace, WorkspaceType, WorkspaceFilters } from "@/types/workspace";
-import { api } from "@/lib/api";
+import { api } from "@/lib/apiClient";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";

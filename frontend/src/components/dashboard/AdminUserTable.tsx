@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Search, Edit, Trash2, UserCheck, UserX } from "lucide-react";
 import { User, UserRole } from "@/types/user";
-import { api } from "@/lib/api";
+import { api } from "@/lib/apiClient";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useToast } from "@/components/ui/ToastProvider";
 import { Button } from "@/components/ui/Button";
@@ -33,12 +33,12 @@ export function AdminUserTable() {
 
   const { data, isLoading } = useQuery<UsersResponse>({
     queryKey: ["users", currentPage, search, roleFilter],
-    queryFn: () => api.getUsers(token!, { page: currentPage, limit: 10, search: search || undefined, role: roleFilter || undefined }),
+    queryFn: () => api.getUsers({ page: currentPage, limit: 10, search: search || undefined, role: roleFilter || undefined }),
     enabled: !!token,
   });
 
   const updateRoleMutation = useMutation({
-    mutationFn: ({ userId, role }: { userId: string; role: UserRole }) => api.updateUserRole(token!, userId, role),
+    mutationFn: ({ userId, role }: { userId: string; role: UserRole }) => api.updateUserRole(userId, role),
     onMutate: async ({ userId, role }) => {
       await queryClient.cancelQueries({ queryKey: ["users"] });
       const previousData = queryClient.getQueryData<UsersResponse>(["users", currentPage, search, roleFilter]);
@@ -69,7 +69,7 @@ export function AdminUserTable() {
 
   const toggleActiveMutation = useMutation({
     mutationFn: ({ userId, active }: { userId: string; active: boolean }) =>
-      active ? api.activateUser(token!, userId) : api.deactivateUser(token!, userId),
+      active ? api.activateUser(userId) : api.deactivateUser(userId),
     onMutate: async ({ userId, active }) => {
       await queryClient.cancelQueries({ queryKey: ["users"] });
       const previousData = queryClient.getQueryData<UsersResponse>(["users", currentPage, search, roleFilter]);
@@ -98,7 +98,7 @@ export function AdminUserTable() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (userId: string) => api.deleteUser(token!, userId),
+    mutationFn: (userId: string) => api.deleteUser(userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       showToast("success", "User deleted successfully");

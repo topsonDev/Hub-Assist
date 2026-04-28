@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { api, type BookingStatus } from "@/lib/api";
+import { api, type BookingStatus } from "@/lib/apiClient";
 import { useAuthStore } from "@/lib/store/authStore";
 import { BookingCard } from "@/components/bookings/BookingCard";
 
@@ -21,7 +21,7 @@ export default function BookingsPage() {
 
   const { data: bookings = [], isLoading } = useQuery({
     queryKey: ["bookings", tab],
-    queryFn: () => api.getBookings(token, tab === "all" ? undefined : tab),
+    queryFn: () => api.getBookings(tab === "all" ? undefined : tab),
     enabled: !!token,
   });
 

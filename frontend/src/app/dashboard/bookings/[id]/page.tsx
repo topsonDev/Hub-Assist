@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
+import { api } from "@/lib/apiClient";
 import { useAuthStore } from "@/lib/store/authStore";
 import { BookingStatusBadge } from "@/components/bookings/BookingStatusBadge";
 import { BookingActions } from "@/components/bookings/BookingActions";
@@ -16,7 +16,7 @@ export default function BookingDetailPage() {
 
   const { data: booking, isLoading } = useQuery({
     queryKey: ["booking", id],
-    queryFn: () => api.getBooking(token, id),
+    queryFn: () => api.getBooking(id),
     enabled: !!token && !!id,
   });
 

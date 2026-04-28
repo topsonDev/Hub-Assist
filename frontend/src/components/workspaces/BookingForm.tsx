@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Workspace } from "@/types/workspace";
-import { api } from "@/lib/api";
+import { api } from "@/lib/apiClient";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useToast } from "@/components/ui/ToastProvider";
 import { Button } from "@/components/ui/Button";
@@ -54,7 +54,7 @@ export function BookingForm({ workspace, onBookingSuccess }: BookingFormProps) {
 
     setIsBooking(true);
     try {
-      await api.createBooking(token, {
+      await api.createBooking({
         workspaceId: workspace.id,
         startTime: data.startTime,
         endTime: data.endTime,

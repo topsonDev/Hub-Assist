@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, Clock, Users, MapPin } from "lucide-react";
 import { Workspace } from "@/types/workspace";
-import { api } from "@/lib/api";
+import { api } from "@/lib/apiClient";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useToast } from "@/components/ui/ToastProvider";
 import { Button } from "@/components/ui/Button";
@@ -41,7 +41,7 @@ function BookingForm({ workspace }: { workspace: Workspace }) {
 
     setIsBooking(true);
     try {
-      await api.createBooking(token, {
+      await api.createBooking({
         workspaceId: workspace.id,
         startTime: formData.startTime,
         endTime: formData.endTime,

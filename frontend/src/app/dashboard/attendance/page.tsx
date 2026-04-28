@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
+import { api } from "@/lib/apiClient";
 import { useAuthStore } from "@/lib/store/authStore";
 import { ClockButton } from "@/components/attendance/ClockButton";
 import { AttendanceLog } from "@/components/attendance/AttendanceLog";
@@ -18,7 +18,7 @@ export default function AttendancePage() {
 
   const { data: records = [], isLoading } = useQuery({
     queryKey: ["attendance", date],
-    queryFn: () => api.getAttendance(token, date),
+    queryFn: () => api.getAttendance(date),
     enabled: !!token,
   });
 

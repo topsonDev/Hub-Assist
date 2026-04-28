@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Bell, Palette, Wallet, AlertTriangle } from "lucide-react";
-import { api } from "@/lib/api";
+import { api } from "@/lib/apiClient";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useToast } from "@/components/ui/ToastProvider";
 import { Button } from "@/components/ui/Button";
@@ -89,7 +89,7 @@ export default function SettingsPage() {
 
     setIsUpdatingSettings(true);
     try {
-      await api.updateUser(token, user.id, { stellarPublicKey: data.stellarPublicKey });
+      await api.updateUser(user.id, { stellarPublicKey: data.stellarPublicKey });
       updateUser({ stellarPublicKey: data.stellarPublicKey });
       showToast("success", "Settings updated successfully");
     } catch {

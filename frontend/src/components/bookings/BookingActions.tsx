@@ -1,8 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api, type Booking } from "@/lib/api";
-import { useAuthStore } from "@/lib/store/authStore";
+import { api, type Booking } from "@/lib/apiClient";
 import { Button } from "@/components/ui/Button";
 
 interface Props {
@@ -11,7 +10,6 @@ interface Props {
 }
 
 export function BookingActions({ booking, isAdmin }: Props) {
-  const token = useAuthStore((s) => s.token) ?? "";
   const qc = useQueryClient();
 
   const invalidate = () => {
@@ -20,12 +18,12 @@ export function BookingActions({ booking, isAdmin }: Props) {
   };
 
   const confirm = useMutation({
-    mutationFn: () => api.confirmBooking(token, booking.id),
+    mutationFn: () => api.confirmBooking(booking.id),
     onSuccess: invalidate,
   });
 
   const cancel = useMutation({
-    mutationFn: () => api.cancelBooking(token, booking.id),
+    mutationFn: () => api.cancelBooking(booking.id),
     onSuccess: invalidate,
   });
 

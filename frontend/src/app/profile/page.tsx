@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Camera, Save, Lock } from "lucide-react";
-import { api } from "@/lib/api";
+import { api } from "@/lib/apiClient";
 import { useAuthStore } from "@/lib/store/authStore";
 import { useToast } from "@/components/ui/ToastProvider";
 import { Button } from "@/components/ui/Button";
@@ -53,7 +53,7 @@ export default function ProfilePage() {
 
     setIsUpdatingProfile(true);
     try {
-      await api.updateUser(token, user.id, data);
+      await api.updateUser(user.id, data);
       updateUser(data);
       showToast("success", "Profile updated successfully");
     } catch {
@@ -68,7 +68,7 @@ export default function ProfilePage() {
 
     setIsChangingPassword(true);
     try {
-      await api.changePassword(token, {
+      await api.changePassword({
         currentPassword: data.currentPassword,
         newPassword: data.newPassword,
       });
@@ -94,7 +94,7 @@ export default function ProfilePage() {
     if (!token || !user || !selectedFile) return;
 
     try {
-      const response = await api.uploadProfilePicture(token, user.id, selectedFile);
+      const response = await api.uploadProfilePicture(user.id, selectedFile);
       updateUser({ avatar: response.avatarUrl });
       showToast("success", "Profile picture updated successfully");
       setSelectedFile(null);
