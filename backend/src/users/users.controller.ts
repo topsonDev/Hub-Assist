@@ -8,6 +8,7 @@ import {
   Param,
   Body,
   Query,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -24,9 +25,12 @@ import { FileValidationPipe } from '../common/pipes/file-validation.pipe';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Roles } from '../common/decorators/roles.decorator';
 import { UserRole } from './user.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
 
 @ApiTags('users')
 @ApiBearerAuth('bearer')
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('users')
 export class UsersController {
   constructor(
