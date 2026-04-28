@@ -4,7 +4,7 @@ module.exports = {
   testEnvironment: 'node',
   testRegex: '.e2e-spec.ts$',
   transform: {
-    '^.+\\.(t)s$': 'ts-jest',
+    '^.+\\.(t)s$': ['ts-jest', { diagnostics: false }],
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
