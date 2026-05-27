@@ -8,8 +8,15 @@ interface AuthState {
   accessToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  /** @deprecated use accessToken */
+  /** 
+   * @deprecated use accessToken
+   * Kept as a compatibility shim for legacy portions of the codebase to prevent runtime breakages.
+   */
   token: string | null;
+  /** 
+   * Extra additions beyond the core required auth shape.
+   * Kept for user preferences and settings integration.
+   */
   settings: UserSettings | null;
 }
 
