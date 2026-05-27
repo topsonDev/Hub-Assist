@@ -12,9 +12,7 @@
     "test:watch": "jest --config jest.config.ts --watch",
     "test:cov": "jest --config jest.config.ts --coverage",
     "test:e2e": "jest --config jest-e2e.config.ts",
-    "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/config/typeorm.config.ts",
-    "migration:run": "typeorm-ts-node-commonjs migration:run -d src/config/typeorm.config.ts",
-    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/config/typeorm.config.ts"
+    "validate-env": "node scripts/validate-env.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
